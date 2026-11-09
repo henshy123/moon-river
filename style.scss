@@ -1,0 +1,719 @@
+// ============================================================
+// Moon River — style.scss
+// Вёрстка под монитор 1920×1080 (без адаптива).
+//
+// Все размеры сняты со скриншота макета (ширина 484px) и
+// пересчитываются в пиксели 1920 функцией s().
+// Пример: s(57) = 226px. Чтобы подправить позицию, меняйте
+// число в s() в «единицах макета».
+// ============================================================
+@use 'sass:math';
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500&display=swap');
+
+// ---------- Масштаб ----------
+$design-w: 484; // ширина скриншота макета
+$screen-w: 1920; // ширина целевого экрана
+
+@function s($n) {
+  @return round(math.div($n * $screen-w, $design-w)) * 1px;
+}
+
+// ---------- Переменные (цвета и шрифты подобраны по скриншоту) ----------
+$dark: #2a2a2a;
+$gray: #9b9b9b;
+$gold: #c9a27a;
+$gold-soft: #d9bf9f;
+$card: #ececec;
+$white: #fff;
+
+$font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+$font-sans: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+
+// ---------- Миксины ----------
+@mixin caps($size: 4.4) {
+  font-size: s($size);
+  line-height: s(8);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+// Стрелка → справа в поле ввода (в HTML её нет отдельной картинкой)
+@mixin arrow-bg($color) {
+  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='10' viewBox='0 0 22 10' fill='none' stroke='#{$color}' stroke-width='1'%3E%3Cpath d='M0 5H21M16.5 0.7L21 5L16.5 9.3'/%3E%3C/svg%3E")
+    no-repeat right center / s(11) auto;
+}
+
+@mixin underline-input($color, $placeholder-color) {
+  display: block;
+  width: s(129);
+  height: s(12);
+  padding: 0 s(16) 0 0;
+  font: 300 s(4.4) $font-sans;
+  color: $color;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid $placeholder-color;
+  border-radius: 0;
+  outline: none;
+
+  &::placeholder {
+    color: $placeholder-color;
+    opacity: 1;
+  }
+}
+
+// ---------- Reset / base ----------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  font-family: $font-sans;
+  font-weight: 300;
+  color: $dark;
+  background: $white;
+}
+
+img {
+  display: block;
+}
+
+hr {
+  border: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: $font-serif;
+  font-weight: 300;
+}
+
+main,
+footer {
+  position: relative;
+  width: s($design-w); // 1920px
+  margin: 0 auto;
+}
+
+// ============================================================
+// HEADER (поверх первой секции)
+// Vector (1) — логотип, Vector (2) — иконки, Rectangle — бургер
+// ============================================================
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  width: s($design-w);
+  height: s(58);
+  margin: 0 auto;
+
+  img {
+    position: absolute;
+  }
+
+  img:nth-of-type(1) {
+    left: s(57);
+    top: s(24);
+    width: s(86);
+  }
+
+  img:nth-of-type(2) {
+    left: s(342);
+    top: s(25);
+    width: s(51);
+  }
+
+  img:nth-of-type(3) {
+    left: s(419);
+    top: s(26);
+    width: s(12);
+  }
+}
+
+// ============================================================
+// SEC1 — HERO (слева белый фон, справа тёмная панель)
+// ============================================================
+.sec1 {
+  position: relative;
+  height: s(348);
+  overflow: hidden;
+  background: $white;
+
+  // тёмная панель справа
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    width: s(188);
+    height: 100%;
+    background: $dark;
+  }
+
+  > * {
+    position: absolute;
+    z-index: 1;
+  }
+
+  h1 {
+    left: s(57);
+    top: s(147);
+    font-size: s(17);
+    line-height: s(24);
+    letter-spacing: 0.05em;
+    color: $dark;
+  }
+
+  // «Переглянути колекцію» + линия слева
+  > p:nth-of-type(1) {
+    left: s(100);
+    top: s(188);
+    padding-left: s(55);
+    font-size: s(4.4);
+    line-height: s(8);
+    letter-spacing: 0.04em;
+    color: $dark;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: s(43);
+      border-top: 1px solid $dark;
+    }
+  }
+
+  // кольцо
+  > img {
+    left: s(246);
+    top: s(138);
+    z-index: 2;
+    width: s(128);
+  }
+
+  // UA / EN
+  > p:nth-of-type(2),
+  > p:nth-of-type(3) {
+    top: s(315);
+    font-size: s(4.4);
+    line-height: s(8);
+    letter-spacing: 0.08em;
+  }
+
+  > p:nth-of-type(2) {
+    left: s(57);
+    color: $dark;
+  }
+
+  > p:nth-of-type(3) {
+    left: s(70);
+    color: $gray;
+  }
+
+  // подпись к кольцу: название / материал / цена
+  > p:nth-of-type(4),
+  > p:nth-of-type(5),
+  > p:nth-of-type(6) {
+    right: s(53);
+    text-align: right;
+    white-space: nowrap;
+    font-size: s(4.4);
+    line-height: s(8);
+  }
+
+  > p:nth-of-type(4) {
+    top: s(294);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $white;
+  }
+
+  > p:nth-of-type(5) {
+    top: s(304);
+    color: #b9b9b9;
+  }
+
+  > p:nth-of-type(6) {
+    top: s(314);
+    color: $gold;
+  }
+}
+
+// ============================================================
+// SEC2 — «Для чоловіків» / «Для жінок»
+// ============================================================
+.sec2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: s(7);
+  height: s(196);
+
+  > div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: s(77);
+    overflow: hidden;
+    color: $white;
+    text-align: center;
+  }
+
+  // фото на весь блок
+  img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  p,
+  h1,
+  h3,
+  hr {
+    position: relative;
+    z-index: 1;
+  }
+
+  p {
+    font-size: s(4.4);
+    line-height: s(8);
+    letter-spacing: 0.04em;
+  }
+
+  h1,
+  h3 {
+    margin-top: s(6);
+    font-size: s(14);
+    line-height: s(14);
+    letter-spacing: 0.04em;
+  }
+
+  hr {
+    width: s(129);
+    margin-top: s(4);
+    border-top: 1px solid rgba($white, 0.8);
+  }
+}
+
+// ============================================================
+// SEC3 — «Знайди бутик біля себе» (слева тёмный блок, справа карта)
+// ============================================================
+.sec3 {
+  position: relative;
+  height: s(203);
+  padding: s(58) 0 0 s(57);
+  overflow: hidden;
+  background: $dark;
+  color: $white;
+
+  h1 {
+    position: relative;
+    z-index: 1;
+    margin-bottom: s(8);
+    font-size: s(13);
+    line-height: s(17);
+    letter-spacing: 0.02em;
+    white-space: pre-line; // перенос после «Знайди», как в макете
+  }
+
+  p {
+    position: relative;
+    z-index: 1;
+    width: s(129);
+    font-size: s(4.4);
+    line-height: s(6);
+    letter-spacing: 0.02em;
+  }
+
+  input {
+    @include underline-input($white, #8c8c8c);
+    @include arrow-bg('%23fff');
+    position: relative;
+    z-index: 1;
+    margin-top: s(15);
+    border-bottom: 1px solid #8c8c8c;
+  }
+
+  // карта
+  img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100% - #{s(243)});
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// ============================================================
+// SEC4 — каталог: 2 карточки | большое фото | 2 карточки
+// Порядок в HTML: 1 JOW'S, 2 CROIX, 3 фото-колье (большое), 4 MOON, 5 WIN
+// ============================================================
+.sec4 {
+  display: grid;
+  grid-template-columns: 135fr 200fr 134fr;
+  grid-template-rows: 1fr 1fr;
+  column-gap: s(7);
+  row-gap: s(8);
+  height: s(276);
+  padding: s(2);
+
+  > div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: $card;
+    overflow: hidden;
+  }
+
+  > div:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  > div:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  // большая центральная карточка с фото
+  > div:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    background: $dark;
+
+    > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      object-fit: cover;
+    }
+
+    p {
+      position: relative;
+      z-index: 1;
+      padding-left: s(10);
+    }
+
+    p:nth-of-type(1) {
+      color: $white;
+    }
+
+    p:nth-of-type(2) {
+      color: rgba($white, 0.85);
+    }
+
+    p:nth-of-type(3) {
+      color: $white;
+    }
+  }
+
+  > div:nth-child(4) {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  > div:nth-child(5) {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  // картинка украшения
+  > div > img {
+    align-self: center;
+    height: s(62);
+    margin-top: s(10);
+    object-fit: contain;
+  }
+
+  p {
+    padding-left: s(11);
+    font-size: s(4);
+    line-height: s(11);
+  }
+
+  // первая подпись прижимает весь текстовый блок к низу карточки
+  p:nth-of-type(1) {
+    margin-top: auto;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $dark;
+  }
+
+  p:nth-of-type(2) {
+    color: $gray;
+  }
+
+  p:nth-of-type(3) {
+    padding-bottom: s(4);
+    color: $gold-soft;
+  }
+}
+
+// ============================================================
+// SEC5 — «Ми у соцмережах» (слайдер)
+// ============================================================
+.sec5 {
+  position: relative;
+  height: s(296);
+  overflow: hidden;
+  background: $dark;
+  color: $white;
+
+  h1 {
+    position: absolute;
+    left: s(57);
+    top: s(44);
+    font-size: s(13);
+    line-height: s(16);
+    letter-spacing: 0.02em;
+  }
+
+  img {
+    position: absolute;
+  }
+
+  // фото слайдера (крайние обрезаны)
+  img:nth-of-type(-n + 5) {
+    top: s(96);
+    height: s(128);
+    object-fit: cover;
+  }
+
+  img:nth-of-type(1) {
+    left: s(-68);
+    width: s(100);
+  }
+
+  img:nth-of-type(2) {
+    left: s(69);
+    width: s(100);
+  }
+
+  img:nth-of-type(3) {
+    left: s(178);
+    width: s(103);
+  }
+
+  img:nth-of-type(4) {
+    left: s(290);
+    width: s(129);
+  }
+
+  img:nth-of-type(5) {
+    left: s(427);
+    width: s(100);
+  }
+
+  // соцсети: Combined Shape (facebook), Instagram
+  img:nth-of-type(6) {
+    left: s(56);
+    top: s(251);
+    width: s(12);
+  }
+
+  img:nth-of-type(7) {
+    left: s(75);
+    top: s(251);
+    width: s(12);
+  }
+
+  // точки слайдера (Group 16)
+  img:nth-of-type(8) {
+    left: s(352);
+    top: s(255);
+    width: s(44);
+  }
+
+  // стрелка вправо (Line (1))
+  img:nth-of-type(9) {
+    left: s(412);
+    top: s(254);
+    width: s(19);
+  }
+
+  // стрелка влево (Line)
+  img:nth-of-type(10) {
+    left: s(318);
+    top: s(254);
+    width: s(19);
+  }
+}
+
+// ============================================================
+// SEC6 — фото слева, контакты и подписка справа
+// ============================================================
+.sec6 {
+  display: grid;
+  grid-template-columns: s(240) 1fr;
+  grid-template-rows: repeat(4, max-content) 1fr;
+  height: s(210);
+  overflow: hidden;
+  background: $white;
+
+  > img {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  > p,
+  > input {
+    grid-column: 2;
+    margin-left: s(51);
+  }
+
+  > p:nth-of-type(1),
+  > p:nth-of-type(3) {
+    @include caps(4.2);
+    letter-spacing: 0.15em;
+    color: $dark;
+  }
+
+  > p:nth-of-type(1) {
+    margin-top: s(57);
+  }
+
+  // номер телефона
+  > p:nth-of-type(2) {
+    margin-top: s(10);
+    font-size: s(5);
+    line-height: s(8);
+    letter-spacing: 0.06em;
+    color: #b8b8b8;
+  }
+
+  > p:nth-of-type(3) {
+    margin-top: s(39);
+  }
+
+  > input {
+    @include underline-input($dark, $gray);
+    @include arrow-bg('%232a2a2a');
+    width: s(95);
+    margin-top: s(7);
+    border-bottom: 1px solid $dark;
+  }
+}
+
+// ============================================================
+// FOOTER (все элементы позиционируются от левого верхнего угла)
+// ============================================================
+footer {
+  height: s(132);
+  overflow: hidden;
+  background: $dark;
+  color: $white;
+
+  > * {
+    position: absolute;
+  }
+
+  p {
+    @include caps(4);
+    letter-spacing: 0.1em;
+    color: $white;
+    white-space: nowrap;
+  }
+
+  // верхняя строка ссылок
+  p:nth-of-type(-n + 5) {
+    top: s(27);
+  }
+
+  p:nth-of-type(1) {
+    left: s(56);
+  }
+
+  p:nth-of-type(2) {
+    left: s(132);
+  }
+
+  p:nth-of-type(3) {
+    left: s(215);
+  }
+
+  p:nth-of-type(4) {
+    left: s(287);
+  }
+
+  p:nth-of-type(5) {
+    left: s(399);
+  }
+
+  // телефон горячей линии
+  p:nth-of-type(6) {
+    left: s(249);
+    top: s(62);
+  }
+
+  p:nth-of-type(7) {
+    left: s(249);
+    top: s(74);
+    text-transform: none;
+    letter-spacing: 0.04em;
+    color: $gray;
+  }
+
+  // подписка на новости
+  p:nth-of-type(8) {
+    left: s(336);
+    top: s(62);
+  }
+
+  input {
+    @include underline-input($white, #8c8c8c);
+    left: s(336);
+    top: s(71);
+    width: s(95);
+  }
+
+  // иконки: 1 — логотип, 2 — Instagram, 3 — facebook, 4 — стрелка у e-mail
+  img:nth-of-type(1) {
+    left: s(57);
+    top: s(73);
+    width: s(86);
+  }
+
+  img:nth-of-type(2) {
+    left: s(267);
+    top: s(87);
+    width: s(12);
+  }
+
+  img:nth-of-type(3) {
+    left: s(248);
+    top: s(87);
+    width: s(12);
+  }
+
+  img:nth-of-type(4) {
+    left: s(420);
+    top: s(75);
+    width: s(10);
+  }
+}
